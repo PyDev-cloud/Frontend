@@ -11,7 +11,7 @@ const Navbar = ({ toggleSidebar }) => {
   return (
     <nav style={{
       height: '60px',
-      backgroundColor: '#333',
+      backgroundColor: '#00146bff',
       color: '#fff',
       display: 'flex',
       alignItems: 'center',

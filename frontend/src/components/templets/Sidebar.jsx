@@ -5,7 +5,7 @@ const Sidebar = ({ collapsed }) => {
   return (
     <aside style={{
       width: collapsed ? '60px' : '200px',
-      backgroundColor: '#222',
+      backgroundColor: '#060558ff',
       color: '#fff',
       height: '100vh',
       paddingTop: '60px',

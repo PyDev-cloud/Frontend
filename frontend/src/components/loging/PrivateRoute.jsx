@@ -3,10 +3,14 @@ import { AuthContext } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children, roles }) => {
-  const { isAuthenticated, user, hasRole } = useContext(AuthContext);
+  const { isAuthenticated, hasRole, isLoading } = useContext(AuthContext);
+
+  if (isLoading) {
+    return <div style={{ padding: 20 }}>লোড হচ্ছে...</div>; // ✅ লোডিং অবস্থায় কিছু দেখান
+  }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   if (roles && roles.length > 0) {

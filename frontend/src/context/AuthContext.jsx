@@ -1,46 +1,35 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // ✅ সঠিক ইমপোর্ট
-
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { jwtDecode } from 'jwt-decode';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // ✅ লোডিং স্টেট
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    
-
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        
-
-        // ✅ এখানে decoded.role কে array বানিয়ে roles বানানো হয়েছে
         setUser({ 
           token, 
-          roles: [decoded.role] || [], 
+          roles: [(decoded.role || "").toLowerCase()], // ✅ lowercase
           email: decoded.email || decoded.sub 
         });
       } catch (err) {
         console.error("Token decoding failed:", err);
         localStorage.removeItem('token');
       }
-    } else {
-      console.warn("No token found in localStorage.");
     }
-
-    setIsLoading(false); // ✅ লোডিং শেষ
+    setIsLoading(false);
   }, []);
 
   const loginUser = (token) => {
     localStorage.setItem('token', token);
     const decoded = jwtDecode(token);
-
-    // ✅ login এর সময়ও একই ভাবে handle
     setUser({ 
       token, 
-      roles: [decoded.role] || [], 
+      roles: [(decoded.role || "").toLowerCase()],
       email: decoded.email || decoded.sub 
     });
   };
@@ -51,7 +40,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAuthenticated = !!user;
-  const hasRole = (role) => user?.roles.includes(role);
+
+  const hasRole = (role) => user?.roles.some(r => r === role.toLowerCase()); // ✅ role check lowercase
 
   return (
     <AuthContext.Provider value={{ user, loginUser, logoutUser, isAuthenticated, hasRole, isLoading }}>
@@ -59,3 +49,6 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+// ✅ Custom hook
+export const useAuth = () => useContext(AuthContext);

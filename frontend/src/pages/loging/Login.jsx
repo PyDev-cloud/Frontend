@@ -13,7 +13,7 @@ const Login = () => {
   // ✅ যদি ইউজার আগেই লগইন করা থাকে, তাহলে সরাসরি ড্যাশবোর্ডে পাঠিয়ে দাও
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard', { replace: true });
+      navigate('/', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -23,7 +23,7 @@ const Login = () => {
     try {
       const data = await login(email, password); // API call থেকে token আসবে
       loginUser(data.token); // context-এ লগইন করাও
-      navigate('/dashboard'); // success হলে ড্যাশবোর্ডে যাও
+      navigate('/'); // success হলে ড্যাশবোর্ডে যাও
     } catch (err) {
       setError(err.detail || 'Login failed');
     }

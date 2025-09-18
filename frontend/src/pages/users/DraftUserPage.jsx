@@ -4,7 +4,7 @@ import DraftStepper from "../../components/users/DraftForm/DraftStepper";
 const DraftUserPage = () => {
   return (
     <div className="container mt-5">
-      <h2>Create Draft User</h2>
+      <h2 className="mb-4">Create Draft User</h2>
       <DraftStepper />
     </div>
   );
